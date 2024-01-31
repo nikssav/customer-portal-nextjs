@@ -1,0 +1,24 @@
+diff --git a/node_modules/openid-client/lib/client.js b/node_modules/openid-client/lib/client.js
+index dc8f927..44212d6 100644
+--- a/node_modules/openid-client/lib/client.js
++++ b/node_modules/openid-client/lib/client.js
+@@ -986,12 +986,13 @@ class BaseClient {
+ 
+     if (payload.aud !== undefined) {
+       if (Array.isArray(payload.aud)) {
+-        if (payload.aud.length > 1 && !payload.azp) {
+-          throw new RPError({
+-            message: 'missing required JWT property azp',
+-            jwt,
+-          });
+-        }
++
++        // if (payload.aud.length > 1 && !payload.azp) {
++        //   throw new RPError({
++        //     message: 'missing required JWT property azp',
++        //     jwt,
++        //   });
++        // }
+ 
+         if (!payload.aud.includes(this.client_id)) {
+           throw new RPError({

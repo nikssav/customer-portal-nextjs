@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
 import TanstackProvider from '../providers/TanstackProvider';
+import AuthProvider from '../providers/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,34 +22,36 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className} suppressHydrationWarning={true}>
-        <div
-          className='layout'
-          style={{
-            display: 'grid',
-            gridTemplateRows: 'auto 1fr auto',
-            gridTemplateColumns: '1fr',
-            height: 'calc(100vh - 16px)',
-          }}
-        >
-          <nav>
-            <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-              <li style={{ padding: '10px' }}>
-                <Link href='/'>Home</Link>
-              </li>
-              <li style={{ padding: '10px' }}>
-                <Link href='/documents'>Documents</Link>
-              </li>
-            </ul>
-          </nav>
+        <AuthProvider>
+          <div
+            className='layout'
+            style={{
+              display: 'grid',
+              gridTemplateRows: 'auto 1fr auto',
+              gridTemplateColumns: '1fr',
+              height: 'calc(100vh - 16px)',
+            }}
+          >
+            <nav>
+              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                <li style={{ padding: '10px' }}>
+                  <Link href='/'>Home</Link>
+                </li>
+                <li style={{ padding: '10px' }}>
+                  <Link href='/documents'>Documents</Link>
+                </li>
+              </ul>
+            </nav>
 
-          <main style={{ padding: '10px' }}>
-            <TanstackProvider>{children}</TanstackProvider>
-          </main>
+            <main style={{ padding: '10px' }}>
+              <TanstackProvider>{children}</TanstackProvider>
+            </main>
 
-          <footer style={{ borderTop: '1px solid #ccc', marginTop: '1rem' }}>
-            Footer
-          </footer>
-        </div>
+            <footer style={{ borderTop: '1px solid #ccc', marginTop: '1rem' }}>
+              Footer
+            </footer>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );
