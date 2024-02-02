@@ -15,7 +15,7 @@ export default function SessionCheck({
   const { data: session } = useSession();
   const [modal, setModal] = useState<boolean>(false);
 
-  console.log('SessionCheck', session);
+  // console.log('SessionCheck', session);
 
   // Set the access token in the session storage if not defined
   // if (
