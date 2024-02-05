@@ -17,7 +17,7 @@ const handler = NextAuth({
           scope: process.env.AUTH_SCOPE,
         },
       },
-      idToken: true,
+      // idToken: true,
     }),
   ],
   // Not providing any secret or NEXTAUTH_SECRET will throw an error in production.
@@ -36,16 +36,28 @@ const handler = NextAuth({
     //   return 'https://localhost:3030';
     // },
 
-    async jwt({ token, account, profile }) {
-      console.log('JWT token: ', token);
-      console.log('JWT account: ', account);
-      // console.log('JWT profile: ', profile);
+    async jwt({ token, account, profile, trigger, session }) {
+      if (trigger === 'update') {
+        console.log('update triggered', session);
+        token.access_token = session.accessToken;
+        token.refresh_token = session.refreshToken;
+        token.expires_at = session.expiresAt;
+        console.log('update triggered', token);
+        // return {
+        // ...session,
+        // accessToken: session.accessToken,
+        // ...token,
+        // ...account,
+        // };
+        return token;
+      }
 
       if (account) {
-        token.access_token = account.access_token;
+        token.accessToken = account.access_token;
         token.refresh_token = account.refresh_token;
         token.expires_at = account.expires_at;
       }
+      console.log('JWT TOKEN: ', token);
       return token;
     },
 
@@ -58,44 +70,18 @@ const handler = NextAuth({
       token: JWT;
       user: User;
     }) {
-      console.log('Session: ', session);
-      console.log('Session user: ', user);
-      console.log('Session token: ', token);
+      // console.log('Session user: ', user);
+      // console.log('Session token: ', token);
       // session.accessToken = token.access_token;
-      session.accessToken = token.access_token;
+      session.accessToken = token.accessToken;
+      session.refreshToken = token.refresh_token;
+      session.expiresAt = token.expires_at;
+
+      // session.user = user;
+      console.log('Session: ', session);
       return session;
     },
-    // async jwt({ token, account }) {
-    //   // Persist the OAuth access_token to the token right after signin
-    //   // if (account) {
-    //   //   token.accessToken = account.access_token;
-    //   // }
-    //   if (account) {
-    //     token.access_token = account.access_token;
-    //     token.refresh_token = account.refresh_token;
-    //     token.expires_at = account.expires_at;
-    //   }
-    //   console.log('JWT Token: ', token);
-    //   return token;
-    // },
-    // async session({ session, token, user }) {
-    //   // Send properties to the client, like an access_token from a provider.
-    //   // session.accessToken = token.accessToken
-    //   const newSession: any = { ...session };
-    //   newSession.accessToken = token.accessToken;
-    //   return newSession;
-    // },
-    // async redirect({ url, baseUrl }) {
-    //   // Allows relative callback URLs
-    //   // if (url.startsWith('/')) return `${baseUrl}${url}`;
-    //   // Allows callback URLs on the same origin
-    //   // else if (new URL(url).origin === baseUrl) return url;
-    //   // return baseUrl;
-    //   return 'http://localhost:3000/authentication/login-callback';
-    // },
   },
-
-  // callbackUrl: 'http://localhost:3000/authentication/login-callback',
 });
 
 export { handler as GET, handler as POST };

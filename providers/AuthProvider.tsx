@@ -5,7 +5,7 @@ import SessionCheck from './SessionCheck';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
-    <SessionProvider>
+    <SessionProvider refetchInterval={1 * 60}>
       <SessionCheck>{children}</SessionCheck>
     </SessionProvider>
   );
