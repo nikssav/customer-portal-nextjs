@@ -10,6 +10,15 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@progress/kendo-data-query": "^1.7.0",
+    "@progress/kendo-licensing": "^1.3.5",
+    "@progress/kendo-react-buttons": "^7.1.0",
+    "@progress/kendo-react-dropdowns": "^7.1.0",
+    "@progress/kendo-react-grid": "^7.1.0",
+    "@progress/kendo-react-indicators": "^7.1.0",
+    "@progress/kendo-react-layout": "^7.1.0",
+    "@progress/kendo-react-notification": "^7.1.0",
+    "@progress/kendo-theme-bootstrap": "^7.2.0",
     "@tanstack/react-query": "^5.17.19",
     "jwt-decode": "^4.0.0",
     "next": "^14.1.0",
