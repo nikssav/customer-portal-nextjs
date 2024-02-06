@@ -80,9 +80,9 @@ export default function SessionCheck({
     //   user: { ...session?.user, accessToken: 'new token' },
     //   // accessToken: 'new token',
     // });
-    if (session) {
-      session.accessToken = 'new token';
-    }
+    // if (session) {
+    //   session.accessToken = 'new token';
+    // }
   };
 
   const cancelDialog = () => {

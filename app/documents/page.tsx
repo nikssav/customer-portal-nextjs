@@ -21,7 +21,7 @@ const Documents = () => {
   console.log('accessToken', accessToken);
 
   const getDocuments = async (token: string | undefined) => {
-    console.log('getDocuments accessToken', accessToken);
+    console.log('getDocuments accessToken', token);
 
     if (token) {
       const res = await fetch(
@@ -39,7 +39,7 @@ const Documents = () => {
     }
   };
 
-  const { data, isError } = useQuery({
+  const { data, isError, error, isPending, isFetched } = useQuery({
     queryKey: ['docs'],
     queryFn: () => getDocuments(accessToken),
   });
@@ -58,12 +58,13 @@ const Documents = () => {
     <>
       <h1>Documents</h1>
       <ul>
-        {documents?.map((doc: any) => (
-          <li key={doc._id}>
-            {doc.DocumentName}
-            <Link href={`/documents/${doc._id}`}>View</Link>
-          </li>
-        ))}
+        {session &&
+          documents?.map((doc: any) => (
+            <li key={doc._id}>
+              {doc.DocumentName}
+              <Link href={`/documents/${doc._id}`}>View</Link>
+            </li>
+          ))}
       </ul>
     </>
   );

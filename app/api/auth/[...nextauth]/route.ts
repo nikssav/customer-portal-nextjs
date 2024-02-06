@@ -53,11 +53,10 @@ const handler = NextAuth({
       }
 
       if (account) {
-        token.accessToken = account.access_token;
+        token.access_token = account.access_token;
         token.refresh_token = account.refresh_token;
         token.expires_at = account.expires_at;
       }
-      console.log('JWT TOKEN: ', token);
       return token;
     },
 
@@ -73,7 +72,7 @@ const handler = NextAuth({
       // console.log('Session user: ', user);
       // console.log('Session token: ', token);
       // session.accessToken = token.access_token;
-      session.accessToken = token.accessToken;
+      session.accessToken = token.access_token;
       session.refreshToken = token.refresh_token;
       session.expiresAt = token.expires_at;
 

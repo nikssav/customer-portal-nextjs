@@ -19,7 +19,7 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   interface JWT extends IUser, DefaultJWT {
-    accessToken: string | undefined;
+    access_token: string | undefined;
     refresh_token: string | undefined;
     expires_at: number | undefined;
   }

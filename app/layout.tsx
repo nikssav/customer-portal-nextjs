@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import TanstackProvider from '../providers/TanstackProvider';
 import AuthProvider from '../providers/AuthProvider';
+import Profile from './components/Profile';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,16 +33,19 @@ export default function RootLayout({
               height: 'calc(100vh - 16px)',
             }}
           >
-            <nav>
-              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                <li style={{ padding: '10px' }}>
-                  <Link href='/'>Home</Link>
-                </li>
-                <li style={{ padding: '10px' }}>
-                  <Link href='/documents'>Documents</Link>
-                </li>
-              </ul>
-            </nav>
+            <header style={{ borderBottom: '1px solid #ccc', display: 'flex' }}>
+              <nav>
+                <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                  <li style={{ padding: '10px' }}>
+                    <Link href='/'>Home</Link>
+                  </li>
+                  <li style={{ padding: '10px' }}>
+                    <Link href='/documents'>Documents</Link>
+                  </li>
+                </ul>
+              </nav>
+              <Profile />
+            </header>
 
             <main style={{ padding: '10px' }}>
               <TanstackProvider>{children}</TanstackProvider>
