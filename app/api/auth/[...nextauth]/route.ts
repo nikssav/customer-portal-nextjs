@@ -38,11 +38,11 @@ const handler = NextAuth({
 
     async jwt({ token, account, profile, trigger, session }) {
       if (trigger === 'update') {
-        console.log('update triggered', session);
+        console.log('update triggered before', session);
         token.access_token = session.accessToken;
         token.refresh_token = session.refreshToken;
         token.expires_at = session.expiresAt;
-        console.log('update triggered', token);
+        console.log('update triggered after', token);
         // return {
         // ...session,
         // accessToken: session.accessToken,

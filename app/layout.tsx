@@ -42,6 +42,9 @@ export default function RootLayout({
                   <li style={{ padding: '10px' }}>
                     <Link href='/documents'>Documents</Link>
                   </li>
+                  <li style={{ padding: '10px' }}>
+                    <Link href='/documents-rtk'>Documents RTK</Link>
+                  </li>
                 </ul>
               </nav>
               <Profile />

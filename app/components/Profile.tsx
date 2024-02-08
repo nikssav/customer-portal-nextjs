@@ -3,6 +3,8 @@
 import React from 'react';
 import { TokenSet } from 'next-auth';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import axios from 'axios';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 const Profile = () => {
   // const [session, setSession] = useState<Session | null>(null);
@@ -29,34 +31,31 @@ const Profile = () => {
 
     console.log('requestData', requestData);
 
-    const response = await fetch(
+    const response = await axios.post(
       `https://auth-api-test.construo.no/connect/token`,
+      requestData,
       {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: requestData,
-        method: 'POST',
+        // body: requestData,
+        // method: 'POST',
       }
     );
 
-    const tokens: TokenSet = await response.json();
-    // const renew = await fetch(
-    //   'https://auth-api-test.construo.no/connect/token',
-    //   {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/x-www-form-urlencoded',
-    //       response_type: 'token',
-    //       // authorization: `Barear ${session?.accessToken}`,
-    //     },
-    //     body: JSON.stringify({
-    //       grant_type: 'refresh_token',
-    //       client_id: 'prdt-CustomerPortal',
-    //       refresh_token: session?.refreshToken,
-    //     }),
-    //   }
-    // );
-    // const data = await renew.json();
+    const tokens: TokenSet = await response.data;
+
     console.log('RENEW', tokens);
+
+    let expiresAt;
+
+    if (!!tokens.access_token && tokens.access_token.length) {
+      const jwt_Token_decoded: JwtPayload = jwtDecode(tokens.access_token);
+
+      const tokenExpIn = jwt_Token_decoded.exp
+        ? jwt_Token_decoded.exp - Math.floor(Date.now() / 1000)
+        : -1;
+
+      console.log('tokenExpIn', tokenExpIn);
+    }
 
     await update({
       ...session,
@@ -74,19 +73,12 @@ const Profile = () => {
       {!!session ? (
         <ul>
           <p>{session?.user?.name}</p>
+
           <button onClick={renewToken}>Renew token</button>
+
           <button onClick={logSession}>Log session</button>
-          <button
-            onClick={() =>
-              // signIn('auth-api', {
-              //   // callbackUrl: 'https://localhost:3000',
-              //   // redirect: true,
-              // })
-              signOut()
-            }
-          >
-            Sign out
-          </button>
+
+          <button onClick={() => signOut()}>Sign out</button>
         </ul>
       ) : (
         <ul>
