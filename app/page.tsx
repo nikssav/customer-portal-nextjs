@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { Session, TokenSet } from 'next-auth';
 import { signIn, signOut, getSession, useSession } from 'next-auth/react';

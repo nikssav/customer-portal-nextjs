@@ -52,6 +52,8 @@ const handler = NextAuth({
         return token;
       }
 
+      // TODO: Check if token is expired and refresh it here instead of in the client (SessionCheck.tsx)
+
       if (account) {
         token.access_token = account.access_token;
         token.refresh_token = account.refresh_token;
