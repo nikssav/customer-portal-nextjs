@@ -28,12 +28,7 @@ const Documents = () => {
   const { data: session } = useSession();
   const accessToken = session?.accessToken;
 
-  const tokenExpiresAt = session?.expiresAt;
-
-  console.log(
-    'tokenExpiresAt',
-    tokenExpiresAt && new Date(tokenExpiresAt * 1000)
-  );
+  // const tokenExpiresAt = session?.expiresAt;
 
   const {
     data,
@@ -42,7 +37,6 @@ const Documents = () => {
     isPending,
     isFetched,
     isLoadingError,
-    status,
     failureReason,
   } = useQuery({
     queryKey: ['docs'],
@@ -53,16 +47,17 @@ const Documents = () => {
 
   const resultString = data && data.results;
 
-  const documents = data && JSON.parse(resultString);
+  const documents = resultString && JSON.parse(resultString);
 
   return (
     <>
       <h1>Documents via React Query</h1>
+
       {isPending && <p>Loading...</p>}
       {isError && <p>Error: {error.name}</p>}
       {isLoadingError && <p>Loading Error</p>}
-      <p>Failure reason: {failureReason?.message}</p>
-      <p>STATUS: {status}</p>
+      {isError && <p>Failure reason: {failureReason?.message}</p>}
+
       {isFetched && (
         <ul>
           {documents?.map((doc: any) => (

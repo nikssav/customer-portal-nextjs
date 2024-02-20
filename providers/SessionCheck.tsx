@@ -3,10 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { getToken } from 'next-auth/jwt';
-// import { DialogActionsBar } from '@progress/kendo-react-dialogs';
-// import Modal from '@/components/basic/Modal';
-// import Loading from '@/components/basic/Loading';
+// import { getToken } from 'next-auth/jwt';
 
 import { Dialog, DialogActionsBar } from '@progress/kendo-react-dialogs';
 import { TokenSet } from 'next-auth';
@@ -24,23 +21,10 @@ export default function SessionCheck({
   const accessToken = session?.accessToken;
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-  // console.log('SessionCheck', session);
-
-  // Set the access token in the session storage if not defined
-  // if (
-  //   typeof localStorage !== 'undefined' &&
-  //   !sessionStorage.getItem('access_token') &&
-  //   session?.accessToken
-  // )
-  //   sessionStorage.setItem('access_token', session.accessToken);
-
   // use effect to check if the token is about to expire
   // if it is, show a modal to renew the token
   // if the token is expired, log the user out
-
   useEffect(() => {
-    console.log('SessionCheck useEffect', session);
-
     if (!!accessToken && accessToken.length) {
       const jwt_Token_decoded: JwtPayload = jwtDecode(accessToken);
 
@@ -48,12 +32,8 @@ export default function SessionCheck({
         ? jwt_Token_decoded.exp - Math.floor(Date.now() / 1000)
         : -1;
 
-      // Console log the token expiration time for testing
-      // console.log('ExpiresIn:', tokenExpIn);
-
       if (!passed) {
         passed = true;
-        console.log('SET INTERVAL');
         interval = setInterval(() => {
           const jwt_Token_decoded: JwtPayload = jwtDecode(accessToken);
 
@@ -62,15 +42,12 @@ export default function SessionCheck({
             : -1;
 
           console.log('ExpiresIn:', tokenExpIn);
-          // console.log('isModalVisible:', isModalVisible);
         }, 1000);
       }
 
       if (tokenExpIn < 0) {
-        console.log('Sign out');
         signOut();
-      } else if (tokenExpIn < 590) {
-        console.log('Token is about to expire');
+      } else if (tokenExpIn < 300) {
         setIsModalVisible(true);
       }
     }
@@ -79,13 +56,11 @@ export default function SessionCheck({
   const updateSession = async () => {
     passed = false;
     clearInterval(interval);
-    console.log('Update session');
+
     const requestData = new URLSearchParams();
     requestData.append('client_id', 'prdt-CustomerPortal');
     requestData.append('grant_type', 'refresh_token');
     requestData.append('refresh_token', session?.refreshToken as string);
-
-    console.log('requestData', requestData);
 
     const response = await axios.post(
       `https://auth-api-test.construo.no/connect/token`,
@@ -109,12 +84,9 @@ export default function SessionCheck({
   };
 
   const renewToken = () => {
-    console.log('Renew token');
     updateSession();
     setIsModalVisible(false);
   };
-
-  console.log('SessionCheck isModalVisible', isModalVisible);
 
   return (
     <>
@@ -124,7 +96,7 @@ export default function SessionCheck({
             className='overlay'
             style={{
               backgroundColor: '#fff',
-              opacity: '0.8',
+              opacity: '0.95',
               position: 'fixed',
               top: 0,
               left: 0,
@@ -143,7 +115,6 @@ export default function SessionCheck({
               transform: 'translate(-50%, -50%)',
             }}
             className='modal-dialog'
-            // height={'50%'}
             width={'400px'}
             onClose={() => setIsModalVisible(false)}
             title='Stay signed in?'

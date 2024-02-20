@@ -1,4 +1,3 @@
-// import NextAuth, { Session, User, TokenSet } from 'next-auth';
 import NextAuth, { User, Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import IdentityServer4Provider from 'next-auth/providers/identity-server4';
@@ -27,10 +26,10 @@ const handler = NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      // console.log('Sign In: ', user, account, profile, email, credentials);
-      return true;
-    },
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   console.log('Sign In: ', user, account, profile, email, credentials);
+    //   return true;
+    // },
     // async redirect({ url, baseUrl }) {
     //   console.log('Redirect: ', url, baseUrl);
     //   return 'https://localhost:3030';
@@ -38,17 +37,10 @@ const handler = NextAuth({
 
     async jwt({ token, account, profile, trigger, session }) {
       if (trigger === 'update') {
-        console.log('update triggered before', session);
         token.access_token = session.accessToken;
         token.refresh_token = session.refreshToken;
         token.expires_at = session.expiresAt;
-        console.log('update triggered after', token);
-        // return {
-        // ...session,
-        // accessToken: session.accessToken,
-        // ...token,
-        // ...account,
-        // };
+
         return token;
       }
 
@@ -71,15 +63,10 @@ const handler = NextAuth({
       token: JWT;
       user: User;
     }) {
-      // console.log('Session user: ', user);
-      // console.log('Session token: ', token);
-      // session.accessToken = token.access_token;
       session.accessToken = token.access_token;
       session.refreshToken = token.refresh_token;
       session.expiresAt = token.expires_at;
-
-      // session.user = user;
-      console.log('Session: ', session);
+      // console.log('Session: ', session);
       return session;
     },
   },

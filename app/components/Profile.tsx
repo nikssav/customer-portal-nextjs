@@ -7,20 +7,6 @@ import axios from 'axios';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 const Profile = () => {
-  // const [session, setSession] = useState<Session | null>(null);
-
-  // const getSessionAsync = async () => {
-  //   const session = await getSession();
-  //   setSession(session);
-  //   return session;
-  // };
-
-  // useEffect(() => {
-  //   getSessionAsync();
-  // }, []);
-
-  // console.log('session', session);
-
   const { data: session, update } = useSession();
 
   const renewToken = async () => {
@@ -28,8 +14,6 @@ const Profile = () => {
     requestData.append('client_id', 'prdt-CustomerPortal');
     requestData.append('grant_type', 'refresh_token');
     requestData.append('refresh_token', session?.refreshToken as string);
-
-    console.log('requestData', requestData);
 
     const response = await axios.post(
       `https://auth-api-test.construo.no/connect/token`,
@@ -42,8 +26,6 @@ const Profile = () => {
     );
 
     const tokens: TokenSet = await response.data;
-
-    console.log('RENEW', tokens);
 
     let expiresAt;
 

@@ -38,7 +38,6 @@ export const documentsApi = createApi({
     prepareHeaders: async headers => {
       // const state = getState() as RootState<any, any, any>;
       const session = await getSession();
-      console.log('session', session);
       const token = session?.accessToken;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
